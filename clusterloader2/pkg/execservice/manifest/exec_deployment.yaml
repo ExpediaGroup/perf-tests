@@ -15,4 +15,4 @@ spec:
     spec:
       containers:
       - name: agnhost
-        image: registry.k8s.io/e2e-test-images/agnhost:2.32
+        image: 344791879147.dkr.ecr.us-west-2.amazonaws.com/thirdparty/registry.k8s.io/e2e-test-images/agnhost:2.32
