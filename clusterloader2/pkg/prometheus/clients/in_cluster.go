@@ -18,6 +18,7 @@ package prom
 
 import (
 	"context"
+	"os"
 	"time"
 
 	clientset "k8s.io/client-go/kubernetes"
@@ -33,9 +34,17 @@ func (icpc *inClusterPrometheusClient) Query(query string, queryTime time.Time) 
 		"query": query,
 		"time":  queryTime.Format(time.RFC3339),
 	}
+	pn := os.Getenv("PROMETHEUS_NAMESPACE")
+	if pn == "" {
+		pn = "monitoring"
+	}
+	psn := os.Getenv("PROMETHEUS_SERVICE_NAME")
+	if psn == "" {
+		psn = "prometheus-k8s"
+	}
 	return icpc.client.CoreV1().
-		Services("monitoring").
-		ProxyGet("http", "prometheus-k8s", "9090", "api/v1/query", params).
+		Services(pn).
+		ProxyGet("http", psn, "9090", "api/v1/query", params).
 		DoRaw(context.TODO())
 }
 

@@ -22,6 +22,7 @@ import (
 	"embed"
 	"fmt"
 	"math/rand"
+	"os"
 	"os/exec"
 	"sync"
 	"time"
@@ -46,6 +47,7 @@ const (
 
 	execPodCheckInterval = 10 * time.Second
 	execPodCheckTimeout  = 2 * time.Minute
+	execImageDefault     = "registry.k8s.io/e2e-test-images/agnhost:2.32"
 
 	execServiceName = "Exec service"
 	deploymentYaml  = "manifest/exec_deployment.yaml"
@@ -82,6 +84,11 @@ func SetUpExecService(f *framework.Framework, c config.ExecServiceConfig) error 
 	mapping["Name"] = execDeploymentName
 	mapping["Namespace"] = execDeploymentNamespace
 	mapping["Replicas"] = execPodReplicas
+	ei := os.Getenv("EXEC_IMAGE")
+	if ei == "" {
+		ei = execImageDefault
+	}
+	mapping["Image"] = ei
 	if err = client.CreateNamespace(f.GetClientSets().GetClient(), execDeploymentNamespace); err != nil {
 		return fmt.Errorf("namespace %s creation error: %v", execDeploymentNamespace, err)
 	}
