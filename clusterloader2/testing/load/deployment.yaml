@@ -92,4 +92,3 @@ spec:
         - name: secret
           secret:
             secretName: {{.BaseName}}-{{.Index}}
-

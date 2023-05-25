@@ -1,0 +1,26 @@
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  labels:
+    group: load
+  name: {{.Name}}
+spec:
+  gateways:
+    - {{.Name}}
+    - mesh
+  hosts:
+    - {{.Name}}.rcp-benchmarks.us-west-2.runtime.test.exp-aws.net
+    - {{.Name}}.{{$.Namespace}}.svc.cluster.local
+  http:
+    - match:
+        - uri:
+            prefix: /rcp
+        - uri:
+            prefix: /metrics
+        - uri:
+            prefix: /healthz
+      route:
+        - destination:
+            host: {{.Name}}
+            port:
+              number: 80

@@ -1,0 +1,20 @@
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  annotations:
+    istio.io/dry-run: "true"
+  labels:
+    group: load
+  name: {{.Name}}
+spec:
+  action: ALLOW
+  rules:
+    - to:
+        - operation:
+            methods:
+              - GET
+            paths:
+              - /ping
+  selector:
+    matchLabels:
+      svc: {{.Name}}

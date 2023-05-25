@@ -34,3 +34,51 @@ steps:
     objectBundle:
     - basename: small-service
       objectTemplatePath: service.yaml
+  - namespaceRange:
+      min: 1
+      max: {{$namespaces}}
+    replicasPerNamespace: {{$bigServicesPerNamespace}}
+    tuningSet: Sequence
+    objectBundle:
+      - basename: big-service
+        objectTemplatePath: virtualservice.yaml
+  - namespaceRange:
+      min: 1
+      max: {{$namespaces}}
+    replicasPerNamespace: {{$mediumServicesPerNamespace}}
+    tuningSet: Sequence
+    objectBundle:
+      - basename: medium-service
+        objectTemplatePath: virtualservice.yaml
+  - namespaceRange:
+      min: 1
+      max: {{$namespaces}}
+    replicasPerNamespace: {{$smallServicesPerNamespace}}
+    tuningSet: Sequence
+    objectBundle:
+      - basename: small-service
+        objectTemplatePath: virtualservice.yaml
+  - namespaceRange:
+      min: 1
+      max: {{$namespaces}}
+    replicasPerNamespace: {{$bigServicesPerNamespace}}
+    tuningSet: Sequence
+    objectBundle:
+      - basename: big-service
+        objectTemplatePath: AuthorizationPolicy.yaml
+  - namespaceRange:
+      min: 1
+      max: {{$namespaces}}
+    replicasPerNamespace: {{$mediumServicesPerNamespace}}
+    tuningSet: Sequence
+    objectBundle:
+      - basename: medium-service
+        objectTemplatePath: AuthorizationPolicy.yaml
+  - namespaceRange:
+      min: 1
+      max: {{$namespaces}}
+    replicasPerNamespace: {{$smallServicesPerNamespace}}
+    tuningSet: Sequence
+    objectBundle:
+      - basename: small-service
+        objectTemplatePath: AuthorizationPolicy.yaml
