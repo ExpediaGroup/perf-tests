@@ -1,5 +1,5 @@
 apiVersion: networking.istio.io/v1beta1
-kind: VirtualService
+kind: Gateway
 metadata:
   labels:
     app.kubernetes.io/managed-by: Helm
@@ -15,22 +15,17 @@ metadata:
     group: load
   name: {{.Name}}
 spec:
-  gateways:
-    - {{.Name}}
-    - mesh
-  hosts:
-    - {{.Name}}.rcp-benchmarks.us-west-2.runtime.test.exp-aws.net
-    - {{.Name}}.{{$.Namespace}}.svc.cluster.local
-  http:
-    - match:
-        - uri:
-            prefix: /rcp
-        - uri:
-            prefix: /metrics
-        - uri:
-            prefix: /healthz
-      route:
-        - destination:
-            host: {{.Name}}
-            port:
-              number: 80
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - {{.Name}}.rcp-benchmarks.us-west-2.runtime.test.exp-aws.net
+        - {{.Name}}.rcp-benchmarks.runtime.test.exp-aws.net
+      port:
+        name: https
+        number: 443
+        protocol: HTTPS
+      tls:
+        credentialName: runtime-team-logo-runtime-demo--test-usw2-master-cert
+        minProtocolVersion: TLSV1_2
+        mode: SIMPLE

@@ -4,6 +4,16 @@ metadata:
   annotations:
     istio.io/dry-run: "true"
   labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: {{.Name}}
+    app.kubernetes.io/version: 34e644a9c9ea02093a3a2fc5e8b5316ac84df0a5
+    helm.sh/chart: paved-road-istio-6.4.0
+    helm.toolkit.fluxcd.io/name: {{.Name}}
+    helm.toolkit.fluxcd.io/namespace: {{.Name}}
+    k8s.expediagroup.com/instance: master
+    k8s.expediagroup.com/reason: branch
+    k8s.expediagroup.com/release: test-usw2
+    progressivedeployment.expediagroup.com/eligible: "true"
     group: load
   name: {{.Name}}
 spec:

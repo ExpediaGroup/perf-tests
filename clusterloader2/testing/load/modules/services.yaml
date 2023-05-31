@@ -40,7 +40,7 @@ steps:
     replicasPerNamespace: {{$bigServicesPerNamespace}}
     tuningSet: Sequence
     objectBundle:
-      - basename: big-service
+      - basename: big-vs
         objectTemplatePath: virtualservice.yaml
   - namespaceRange:
       min: 1
@@ -48,7 +48,7 @@ steps:
     replicasPerNamespace: {{$mediumServicesPerNamespace}}
     tuningSet: Sequence
     objectBundle:
-      - basename: medium-service
+      - basename: medium-vs
         objectTemplatePath: virtualservice.yaml
   - namespaceRange:
       min: 1
@@ -56,7 +56,7 @@ steps:
     replicasPerNamespace: {{$smallServicesPerNamespace}}
     tuningSet: Sequence
     objectBundle:
-      - basename: small-service
+      - basename: small-vs
         objectTemplatePath: virtualservice.yaml
   - namespaceRange:
       min: 1
@@ -64,7 +64,7 @@ steps:
     replicasPerNamespace: {{$bigServicesPerNamespace}}
     tuningSet: Sequence
     objectBundle:
-      - basename: big-service
+      - basename: big-authpolicy
         objectTemplatePath: AuthorizationPolicy.yaml
   - namespaceRange:
       min: 1
@@ -72,7 +72,7 @@ steps:
     replicasPerNamespace: {{$mediumServicesPerNamespace}}
     tuningSet: Sequence
     objectBundle:
-      - basename: medium-service
+      - basename: medium-authpolicy
         objectTemplatePath: AuthorizationPolicy.yaml
   - namespaceRange:
       min: 1
@@ -80,5 +80,29 @@ steps:
     replicasPerNamespace: {{$smallServicesPerNamespace}}
     tuningSet: Sequence
     objectBundle:
-      - basename: small-service
+      - basename: small-authpolicy
         objectTemplatePath: AuthorizationPolicy.yaml
+  - namespaceRange:
+      min: 1
+      max: {{$namespaces}}
+    replicasPerNamespace: {{$bigServicesPerNamespace}}
+    tuningSet: Sequence
+    objectBundle:
+      - basename: big-gateway
+        objectTemplatePath: gateway.yaml
+  - namespaceRange:
+      min: 1
+      max: {{$namespaces}}
+    replicasPerNamespace: {{$mediumServicesPerNamespace}}
+    tuningSet: Sequence
+    objectBundle:
+      - basename: medium-gateway
+        objectTemplatePath: gateway.yaml
+  - namespaceRange:
+      min: 1
+      max: {{$namespaces}}
+    replicasPerNamespace: {{$smallServicesPerNamespace}}
+    tuningSet: Sequence
+    objectBundle:
+      - basename: small-gateway
+        objectTemplatePath: gateway.yaml
