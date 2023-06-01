@@ -76,6 +76,7 @@ type ModifierConfig struct {
 type PrometheusConfig struct {
 	TearDownServer             bool
 	EnableServer               bool
+	PreInstallServer           bool
 	EnablePushgateway          bool
 	ScrapeEtcd                 bool
 	ScrapeNodeExporter         bool

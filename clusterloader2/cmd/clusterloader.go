@@ -328,6 +328,12 @@ func main() {
 				prometheusController.EnableTearDownPrometheusStackOnInterrupt()
 			}
 		}
+		if clusterLoaderConfig.PrometheusConfig.PreInstallServer {
+			if prometheusController, err = prometheus.NewController(&clusterLoaderConfig); err != nil {
+				klog.Exitf("Error while creating Prometheus Controller: %v", err)
+			}
+			prometheusFramework = prometheusController.GetFramework()
+		}
 		if clusterLoaderConfig.ExecServiceConfig.Enable {
 			if err := execservice.SetUpExecService(f, clusterLoaderConfig.ExecServiceConfig); err != nil {
 				klog.Exitf("Error while setting up exec service: %v", err)

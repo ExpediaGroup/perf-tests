@@ -4,6 +4,7 @@
 # - The number of created SVCs is half the number of created Deployments.
 # - Only half of Deployments will be assigned 1-1 to existing SVCs.
 
+{{$ALLOWED_SLOW_API_CALLS := DefaultParam .CL2_ALLOWED_SLOW_API_CALLS 0}}
 #Constants
 # Cater for the case where the number of nodes is less than nodes per namespace. See https://github.com/kubernetes/perf-tests/issues/887
 {{$NODES_PER_NAMESPACE := MinInt .Nodes (DefaultParam .NODES_PER_NAMESPACE 100)}}
@@ -106,7 +107,18 @@ tuningSets:
   RandomizedTimeLimitedLoad:
     timeLimit: {{$deletionTime}}s
 steps:
-
+- name: Start measurements
+  measurements:
+    - Identifier: APIResponsivenessPrometheus
+      Method: APIResponsivenessPrometheus
+      Params:
+        action: start
+        prometheusClient: inCluster
+    - Identifier: APIResponsivenessPrometheusSimple
+      Method: APIResponsivenessPrometheus
+      Params:
+        action: start
+        prometheusClient: inCluster
 - module:
     path: modules/services.yaml
     params:
@@ -125,3 +137,15 @@ steps:
       smallServicesPerNamespace: 0
       mediumServicesPerNamespace: 0
       bigServicesPerNamespace: 0
+
+- name: Measure pod startup latency
+  measurements:
+    - Identifier: APIResponsivenessPrometheusSimple
+      Method: APIResponsivenessPrometheus
+      Params:
+        action: gather
+        enableViolations: true
+        useSimpleLatencyQuery: true
+        prometheusClient: inCluster
+        summaryName: APIResponsivenessPrometheus_simple
+        allowedSlowCalls: {{$ALLOWED_SLOW_API_CALLS}}
